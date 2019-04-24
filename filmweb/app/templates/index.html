@@ -2,25 +2,48 @@
 
 {% block title %}Filmweb{% endblock %}
 {% block head %}
+
 {{ super() }}
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
 {% block page_content %}
+
 <div class="flash_message"></div>
-<div>
-    <h1>
+<div class="headline">
+    <p class="hello headline-text">
         Hello,
         {% if current_user.is_authenticated %}
-            {{ current_user.first_name }}
+            {{ current_user.first_name}}
+        {% else %}Stranger{% endif %}
+    </p>
 
-        {% else %}Stranger{% endif %}!
-    </h1>
+        <main>
+
+            <div class="headline">
+                <p class="headline-text">Check out our TOP lists!</p>
+
+            </div>
+            <div class="flex-container">
+                <a href="top-movies.html">
+                    <div class="top-item">
+                        TOP movies
+
+                    </div>
+                </a>
+                <a href="top-tv-shows.html">
+                    <div class="top-item">
+                        TOP tv shows
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </main>
 
 
 
-</div>
 
 <br/>
 <br/>
