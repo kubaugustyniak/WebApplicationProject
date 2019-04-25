@@ -321,3 +321,44 @@ body {
     margin-bottom: 50px;
 
  }
+
+div.comment-tabs {
+    margin-top: 16px;
+}
+ul.comments {
+    text-align:left;
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 16px;
+    border-top: 1px solid #e0e0e0;
+}
+div.comment-tabs ul.comments {
+    margin: 0px;
+    border-top: none;
+
+}
+ul.comments li.comment {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.comments li.comment:hover {
+    background-color: #f0f0f0;
+}
+div.comment-date {
+    float: right;
+}
+div.comment-author {
+    text-align:left;
+    font-weight: bold;
+
+}
+div.comment-thumbnail {
+    position: absolute;
+}
+div.comment-content {
+    margin-left: 48px;
+    min-height: 48px;
+}
+div.comment-footer {
+    text-align: right;
+}
