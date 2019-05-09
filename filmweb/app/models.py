@@ -13,8 +13,11 @@ class Film(db.Model):
     poster = db.Column(db.String(256))
     description = db.Column(db.String(256))
     is_series = db.Column(db.Boolean)
-    score = db.relationship('Score', backref='film', lazy='dynamic')
-    film_allocation = db.relationship('Film_allocation', backref='film', lazy='dynamic')
+    score = db.Column(db.Float)
+    score_r = db.relationship('Score', backref='film', lazy='dynamic')
+    film_actors = db.relationship('Film_actors', backref='film', lazy='dynamic')
+    film_directors = db.relationship('Film_directors', backref='film', lazy='dynamic')
+    comment = db.relationship('Comment', backref='comment', lazy='dynamic')
 
 class Score(db.Model):
     __tablename__='score'
@@ -28,22 +31,26 @@ class Actors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
-    film_allocation = db.relationship('Film_allocation', backref='actor', lazy='dynamic')
+    film_actors = db.relationship('Film_actors', backref='actor', lazy='dynamic')
 
 class Directors(db.Model):
     __tablename__ = 'directors'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
-    film_allocation = db.relationship('Film_allocation', backref='director', lazy='dynamic')
+    film_directors = db.relationship('Film_directors', backref='director', lazy='dynamic')
 
-class Film_allocation(db.Model):
-    __tablename__='film_allocation'
+class Film_directors(db.Model):
+    __tablename__='film_directors'
     id = db.Column(db.Integer, primary_key=True)
-    film_id = db.Column(db.Integer, db.ForeignKey('films.id'),primary_key=True)
-    director_id = db.Column(db.Integer, db.ForeignKey('directors.id'),primary_key=True)
-    actor_id = db.Column(db.Integer, db.ForeignKey('actors.id'),primary_key=True)
+    film_id = db.Column(db.Integer, db.ForeignKey('films.id'))
+    director_id = db.Column(db.Integer, db.ForeignKey('directors.id'))
 
+class Film_actors(db.Model):
+    __tablename__='film_actors'
+    id = db.Column(db.Integer, primary_key=True)
+    film_id = db.Column(db.Integer, db.ForeignKey('films.id'))
+    actor_id = db.Column(db.Integer, db.ForeignKey('actors.id'))
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -51,6 +58,7 @@ class Comment(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    film_id = db.Column(db.Integer, db.ForeignKey('films.id'))
 
 
 class User(UserMixin, db.Model):

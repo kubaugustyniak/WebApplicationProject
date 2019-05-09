@@ -4,8 +4,17 @@
 {% block title %}Filmweb - Top films{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Tutaj będzie lista w przyszłości</h1>
-</div>
+{% for i in films %}
 
+    <div class="page" >
+        <a href="{{url_for('main.film',id=i.id)}}">
+            <img class="image" src="{{ i.poster }}">
+
+                <h2>{{ i.title }}</h2>
+                <p>{{i.description}}</p>
+
+        </a>
+    </div>
+
+{% endfor %}
 {% endblock %}

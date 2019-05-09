@@ -362,3 +362,15 @@ div.comment-content {
 div.comment-footer {
     text-align: right;
 }
+.profile-thumbnail {
+    position: absolute;
+}
+.page {
+    min-height: 220px;
+    padding: 0 20px 20px 0;
+    text-align: left;
+
+}
+.image{
+    float: left;
+}

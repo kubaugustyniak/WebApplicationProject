@@ -3,13 +3,34 @@
 
 
 {% block page_content %}
-<div>
+<div class="page">
+    <div class="page" >
 
-    <label for="input-1" class="control-label">Rate This</label>
-    <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="1">
+        <img class="image" src="{{ film.poster }}">
+
+            <h2>{{ film.title }}</h2>
+            <p>{{film.description}}</p>
+        <p><b>Directors: </b>
+            {% for d in directors%}
+            {{ d.first_name }} {{ d.last_name }},
+            {% endfor %}
+        </p>
+        <p><b>Actors: </b>
+                {% for a in actors%}
+                {{ a.first_name }} {{ a.last_name }},
+                {% endfor %}
+        </p>
+
+
+    </div>
+    {% if current_user.is_authenticated %}
+
     {{ wtf.quick_form(form) }}
-
+    {% endif %}
+<br/>
+    <p><b>Comments</b></p>
 <ul class="comments">
+
     {% for comment in comments %}
     <li class="comment">
 
@@ -29,14 +50,5 @@
 {% block scripts %}
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-<script src="path/to/js/star-rating.js" type="text/javascript"></script>
 
-<!-- optionally if you need to use a theme, then include the theme file as mentioned below -->
-<script src="path/to/themes/krajee-svg/theme.js"></script>
-
-<!-- optionally if you need translation for your language then include locale file as mentioned below -->
-<script src="path/to/js/locales/{lang}.js"></script>
-<script>
-    $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
-</script>
 {% endblock %}
