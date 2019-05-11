@@ -5,7 +5,7 @@ from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
-
+import os
 
 db=SQLAlchemy()
 bootstrap = Bootstrap()
@@ -26,6 +26,8 @@ def create_app(config_name):
     moment.init_app(app)
 
 
+
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
@@ -33,3 +35,5 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     return app
+
+app=create_app(os.getenv('FLASK_CONFIG') or 'default')

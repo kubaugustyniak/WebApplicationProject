@@ -1,9 +1,12 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request, Response, jsonify
 from flask_login import current_user
 from . import main
-from ..models import Comment,Film,Directors,Actors, Film_directors,Film_actors
+from ..models import Comment,Film,Directors,Actors, Film_directors,Film_actors, Score
 from .forms import CommentForm
 from .. import db
+
+
+
 
 @main.route('/', methods=['GET','POST'])
 def index():
@@ -32,14 +35,46 @@ def film(id):
         db.session.commit()
         return redirect(url_for('.film',id=id))
     comments = Comment.query.filter_by(film_id=id).order_by(Comment.timestamp.desc()).all()
-    return render_template('film.html',film=film, form=form, comments=comments, directors=directors, actors=actors)
+
+    score=Score.query.filter_by(film_id=id,user_id=current_user.id).first()
+    if score is None:
+        score=0
+    return render_template('film.html',film=film, form=form, comments=comments, directors=directors, actors=actors, score=score)
 
 @main.route('/top_films', methods=['GET','POST'])
 def top_films():
-    films=Film.query.all()
+    films=Film.query.filter_by(is_series=False).order_by(Film.score.desc()).all()
     return render_template('Top_films.html', films=films)
 
 @main.route('/top_series', methods=['GET','POST'])
 def top_series():
-    series=Film.query.filter_by(is_series=True).all()
+    series=Film.query.filter_by(is_series=True).order_by(Film.score.desc()).all()
     return render_template('Top_series.html', series=series)
+
+
+@main.route('/rating/<int:id>', methods=['GET','POST'])
+def rating(id):
+    score=Score()
+    score.filmscore =request.values['value']
+    score.film_id=id
+    score.user_id=current_user.id
+    db.session.add(score)
+    db.session.commit()
+
+    film_rates=Score.query.filter_by(film_id=id).all()
+    sum = 0
+    for rate in film_rates:
+        sum += rate.filmscore
+
+    avg=sum/len(film_rates)
+
+    film=Film.query.filter_by(id=id).first()
+    film.score=avg
+
+    db.session.add(film)
+    db.session.commit()
+
+    film = Film.query.filter_by(id=id).first()
+
+    return jsonify(film.score)
+

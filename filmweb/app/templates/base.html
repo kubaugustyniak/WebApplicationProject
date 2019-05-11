@@ -41,9 +41,9 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="">
+                        <li><a href="{{ url_for('main.top_films')}}">
                             TOP Movies</a></li>
-                        <li><a href="">
+                        <li><a href="{{ url_for('main.top_series')}}">
                             TOP Series</a></li>
                     </ul>
                 </li>
@@ -92,8 +92,8 @@
     <div class="container">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="top-movies.html">Top Rated Movies</a></li>
-            <li><a href="top-tv-shows.html">Top Rated TV Shows</a></li>
+            <li><a href="{{ url_for('main.top_films')}}">Top Rated Movies</a></li>
+            <li><a href="{{ url_for('main.top_series')}}">Top Rated Series</a></li>
             <br>
             <li>Copyright © 2019</li>
         </ul>

@@ -15,6 +15,7 @@ class Config:
     URLOPY_MAIL_SENDER = "test.mail25741@gmail.com"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    TEMPLATES_AUTO_RELOAD = True
     @staticmethod
     def init_app(app):
         pass
