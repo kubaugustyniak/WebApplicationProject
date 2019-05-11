@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for,request
 from flask_login import current_user
 from . import main
 from ..models import Comment,Film,Directors,Actors, Film_directors,Film_actors
@@ -8,7 +8,11 @@ from .. import db
 @main.route('/', methods=['GET','POST'])
 def index():
 
-    return render_template('index.html')
+        return render_template('index.html')
+
+
+
+
 
 @main.route('/film/<int:id>', methods=['GET','POST'])
 def film(id):
@@ -43,3 +47,29 @@ def top_films():
 def top_series():
     series=Film.query.filter_by(is_series=True).all()
     return render_template('Top_series.html', series=series)
+
+@main.route('/post_title', methods=['GET','POST'])
+def search():
+    if request.method == "POST":
+
+        text = request.form['text']
+
+        if not text:
+            text=" ";
+
+        return redirect(url_for('main.search_films', title=text))
+
+
+
+
+@main.route('/search_films/<string:title>', methods=['GET','POST'])
+def search_films(title):
+        films = Film.query.filter(Film.title.like("%{0}%".format(title))).all()
+
+        if len(films)==0:
+          empty=True
+        else:
+            empty=False
+
+        return render_template('search_films.html', films=films,empty=empty)
+
