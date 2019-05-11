@@ -27,7 +27,11 @@
                 {{ a.first_name }} {{ a.last_name }},
                 {% endfor %}
         </p>
+        {% if current_user.is_authenticated %}
         <div id="input-id"></div>
+        {% else %}
+        <div id="input-id2"></div>
+        {% endif %}
 
     </div>
 
@@ -80,7 +84,10 @@
             });
 
 
-});
+        });
+    $("#input-id2").rating({min:0, max:5, step:1, size:'lg'});
+    $('#input-id2').rating('update', '{{film.score}}');
+    $('#input-id2').rating('refresh', {displayOnly:true, showCaption:false});
     })
 </script>
 {% endblock %}

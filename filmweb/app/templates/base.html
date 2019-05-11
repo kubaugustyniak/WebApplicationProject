@@ -3,104 +3,107 @@
 {% block title %}
 {% endblock %}
 {% block styles -%}
-{{super()}}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-<link href="https://fonts.googleapis.com/css?family=Bungee|Bungee+Shade|Karla:400,700" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Bungee+Shade|Karla:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 {% endblock styles %}
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Filmweb</a>
-        </div>
-        <form class="navbar-form navbar-right " action="/action_page.php">
-            <div class="input-group .col-lg-4">
-                <input type="text" class="form-control" placeholder="Find movies & tv shows...">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Filmweb</a>
             </div>
-        </form>
-        <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right " action="/post_title" method="post">
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-sort-amount-down"></i> TOP
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('main.top_films')}}">
-                            TOP Movies</a></li>
-                        <li><a href="{{ url_for('main.top_series')}}">
-                            TOP Series</a></li>
-                    </ul>
-                </li>
+                <div class="input-group .col-lg-4">
+                    <input type="text" name="text" class="form-control" placeholder="Find movies & tv shows..."
+                           value="{{ request.form.text }}">
+
+                    <div class="input-group-btn">
+
+                            <button class="btn btn-default" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+
+                    </div>
+                </div>
+
+            </form>
+            <div class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-sort-amount-down"></i> TOP
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{url_for('main.top_films')}}">
+                                TOP Movies</a></li>
+                            <li><a href="{{url_for('main.top_series')}}">
+                                TOP Series</a></li>
+                        </ul>
+                    </li>
 
 
-                {% if current_user.is_authenticated %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-user"></i> Account
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('auth.change_password') }}">
-                            Change Password</a></li>
-                        <li><a href="{{ url_for('auth.change_email_request') }}">
-                            Change Email</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}"><i class="fas fa-user"></i> Sign in</a></li>
-                {% endif %}
+                    {% if current_user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-user"></i> Account
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('auth.change_password') }}">
+                                    Change Password</a></li>
+                                <li><a href="{{ url_for('auth.change_email_request') }}">
+                                    Change Email</a></li>
+                                <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('auth.login') }}"><i class="fas fa-user"></i> Sign in</a></li>
+                    {% endif %}
 
-            </ul>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 {% block content %}
-{{super()}}
-<div class="container">
-    <div class="body-container">
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% block page_content %}
-        {% endblock %}
-    </div>
-
-</div>
-<footer class="page-footer">
+    {{ super() }}
     <div class="container">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{{ url_for('main.top_films')}}">Top Rated Movies</a></li>
-            <li><a href="{{ url_for('main.top_series')}}">Top Rated Series</a></li>
-            <br>
-            <li>Copyright © 2019</li>
-        </ul>
+        <div class="body-container">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% block page_content %}
+            {% endblock %}
+        </div>
+
     </div>
+    <footer class="page-footer">
+        <div class="container">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{url_for('main.top_films')}}">Top Rated Movies</a></li>
+                <li><a href="{{url_for('main.top_series')}}">Top Rated Series</a></li>
+                <br>
+                <li>Copyright © 2019</li>
+            </ul>
+        </div>
 
-</footer>
+    </footer>
 {% endblock %}
-
-
-
