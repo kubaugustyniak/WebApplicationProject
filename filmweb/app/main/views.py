@@ -1,3 +1,4 @@
+
 from flask import render_template, redirect, url_for, request, Response, jsonify
 from flask_login import current_user
 from . import main
@@ -11,7 +12,11 @@ from .. import db
 @main.route('/', methods=['GET','POST'])
 def index():
 
-    return render_template('index.html')
+        return render_template('index.html')
+
+
+
+
 
 @main.route('/film/<int:id>', methods=['GET','POST'])
 def film(id):
@@ -35,20 +40,16 @@ def film(id):
         db.session.commit()
         return redirect(url_for('.film',id=id))
     comments = Comment.query.filter_by(film_id=id).order_by(Comment.timestamp.desc()).all()
-
-    score=Score.query.filter_by(film_id=id,user_id=current_user.id).first()
-    if score is None:
-        score=0
-    return render_template('film.html',film=film, form=form, comments=comments, directors=directors, actors=actors, score=score)
+    return render_template('film.html',film=film, form=form, comments=comments, directors=directors, actors=actors)
 
 @main.route('/top_films', methods=['GET','POST'])
 def top_films():
-    films=Film.query.filter_by(is_series=False).order_by(Film.score.desc()).all()
+    films=Film.query.all()
     return render_template('Top_films.html', films=films)
 
 @main.route('/top_series', methods=['GET','POST'])
 def top_series():
-    series=Film.query.filter_by(is_series=True).order_by(Film.score.desc()).all()
+    series=Film.query.filter_by(is_series=True).all()
     return render_template('Top_series.html', series=series)
 
 
@@ -77,4 +78,31 @@ def rating(id):
     film = Film.query.filter_by(id=id).first()
 
     return jsonify(film.score)
+
+
+
+@main.route('/post_title', methods=['GET','POST'])
+def search():
+    if request.method == "POST":
+
+        text = request.form['text']
+
+        if not text:
+            text=" ";
+
+        return redirect(url_for('main.search_films', title=text))
+
+
+
+
+@main.route('/search_films/<string:title>', methods=['GET','POST'])
+def search_films(title):
+        films = Film.query.filter(Film.title.like("%{0}%".format(title))).all()
+
+        if len(films)==0:
+          empty=True
+        else:
+            empty=False
+
+        return render_template('search_films.html', films=films,empty=empty)
 

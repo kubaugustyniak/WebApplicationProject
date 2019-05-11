@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block title %}Filmweb - Search films{% endblock %}
+
+{% block page_content %}
+    {% if empty==True %}
+        <h1>There are no movies with selected title</h1>
+    {% else %}
+        {% for i in films %}
+
+            <div class="page">
+                <a href="{{ url_for('main.film',id=i.id) }}">
+                    <img class="image" src="{{ i.poster }}">
+
+                    <h2>{{ i.title }}</h2>
+                    <p>{{ i.description }}</p>
+
+                </a>
+            </div>
+
+
+        {% endfor %}
+    {% endif %}
+{% endblock %}
