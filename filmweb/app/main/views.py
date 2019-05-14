@@ -44,7 +44,7 @@ def film(id):
 
 @main.route('/top_films', methods=['GET','POST'])
 def top_films():
-    films=Film.query.all()
+    films=Film.query.filter_by(is_series=False).all()
     return render_template('Top_films.html', films=films)
 
 @main.route('/top_series', methods=['GET','POST'])
