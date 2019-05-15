@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %} Filmweb - Change User Info {% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+    <h1>Account Update</h1>
+</div>
+<div class="account-form col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+
+{% endblock %}
