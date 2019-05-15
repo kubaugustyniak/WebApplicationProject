@@ -62,6 +62,10 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('auth.display_user_info') }}">
+                                    Account Info</a></li>
+                                <li><a href="{{ url_for('auth.change_user_info') }}">
+                                    Change User Info</a></li>
                                 <li><a href="{{ url_for('auth.change_password') }}">
                                     Change Password</a></li>
                                 <li><a href="{{ url_for('auth.change_email_request') }}">
