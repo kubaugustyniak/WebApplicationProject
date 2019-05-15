@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, url_for,redirect
 from ..models import User
-from.forms import LoginForm, RegistrationForm, ChangeEmailForm, ChangePasswordForm, PasswordResetForm, PasswordResetRequestForm
+from.forms import LoginForm, RegistrationForm, ChangeEmailForm, ChangeUserInfo, ChangePasswordForm, PasswordResetForm, PasswordResetRequestForm
 from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
 from app import db
@@ -71,6 +71,19 @@ def resend_confirmation():          # it send confirmation email with token once
                'auth/email/confirm',user=current_user, token=token)
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
+
+@auth.route('/change_user_info', methods=['GET', 'POST'])
+@login_required
+def change_user_info():
+    form = ChangeUserInfo()
+    if form.validate_on_submit():
+        current_user.first_name = form.new_first_name.data
+        current_user.last_name = form.new_second_name.data
+        db.session.commit()
+        flash('Your data has been updated')
+        return redirect(url_for('main.index'))
+
+    return render_template('auth/change_user_info.html', form=form)
 
 @auth.route('/change_password', methods=['GET', 'POST'])
 @login_required
@@ -145,3 +158,8 @@ def change_email(token):        #it update email address
     else:
         flash('Invalid request')
     return redirect(url_for('main.index'))
+
+@auth.route('/account', methods=['GET', 'POST'])
+@login_required
+def display_user_info():
+    return render_template('auth/account.html')
