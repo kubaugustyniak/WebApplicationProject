@@ -2,7 +2,7 @@ alembic==1.0.8
 algorithmia==1.1.4
 algorithmia-api-client==1.0.1
 backcall==0.1.0
-bleach==3.0.2
+bleach==3.3.0
 blinker==1.4
 certifi==2019.3.9
 chardet==3.0.4
